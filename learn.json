@@ -1,0 +1,14 @@
+{
+  "title": {
+    "en": "AgentHub Admin Panel",
+    "es": "Panel de administración de AgentHub"
+  },
+  "description": {
+    "us": "Static HTML prototype of the AgentHub admin panel. The specification is in SPECS.md. Styling uses Tailwind CSS from the CDN and behavior uses vanilla JavaScript.",
+    "es": "Prototipo HTML estático del panel de administración de AgentHub. La especificación está en SPECS.md. Los estilos usan Tailwind CSS por CDN y el comportamiento usa JavaScript vanilla."
+  },
+  "repository": "https://github.com/Picazo333/agent-hub-ui-specs-and-prompts",
+  "projectType": "project",
+  "difficulty": "beginner",
+  "technologies": ["HTML", "Tailwind", "JavaScript"]
+}
