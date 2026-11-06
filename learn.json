@@ -1,15 +1,14 @@
 {
   "title": {
-    "en": "HTML/CSS Starter Template for beginners",
-    "es": "Plantilla Inicial de HTML/CSS para principiantes"
+    "en": "AgentHub Admin Panel",
+    "es": "Panel de administración de AgentHub"
   },
   "description": {
-    "us": "This is a starter template for HTML/CSS projects. It includes a basic folder structure, a sample HTML file, and a CSS file to kickstart your project.",
-    "es": "Esta es una plantilla inicial para proyectos de HTML/CSS. Incluye una estructura básica de carpetas, un archivo HTML de ejemplo y un archivo CSS para iniciar tu proyecto."
+    "us": "Static HTML prototype of the AgentHub admin panel. The specification is in SPECS.md. Styling uses Tailwind CSS from the CDN and behavior uses vanilla JavaScript.",
+    "es": "Prototipo HTML estático del panel de administración de AgentHub. La especificación está en SPECS.md. Los estilos usan Tailwind CSS por CDN y el comportamiento usa JavaScript vanilla."
   },
-  "repository": "https://github.com/yourusername/html-css-starter-template",
-  "preview": "https://repository-images.githubusercontent.com/183094552/ef3d4980-78e0-11ea-8f81-31089e626628",
-  "projectType": "template",
+  "repository": "https://github.com/Picazo333/agent-hub-ui-specs-and-prompts",
+  "projectType": "project",
   "difficulty": "beginner",
-  "technologies": ["HTML", "CSS", "javascript"]
+  "technologies": ["HTML", "Tailwind", "JavaScript"]
 }

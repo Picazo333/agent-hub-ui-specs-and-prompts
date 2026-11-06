@@ -92,7 +92,7 @@ Metric cards use a distinct tinted icon tile:
 Every repeated entry (each user row, agent card, skill card, contract row, and error row) has one actions control.
 
 - The trigger is a `button type="button"` whose visible label is the character `⋮`. `aria-haspopup="menu"`, `aria-expanded` is `true` only while open, and `aria-label` is `Actions for {record name}`.
-- The menu is a sibling `div` with `role="menu"`, absolutely positioned to the right edge of the trigger (`right-0 z-30 mt-1 w-44`), hidden when closed. Items are `button type="button"` with `role="menuitem"`, full width, left aligned, `text-sm`.
+- The menu is a sibling `div` with `role="menu"`, `w-44`, hidden when closed. In the markup it is absolutely positioned to the right edge of the trigger (`right-0 z-30 mt-1`). While it is open, script moves it to `document.body` and places it with fixed Tailwind classes, right-aligned to the trigger. It opens above the trigger when there is room, so it does not cover the next row's action button; otherwise it opens below. Items are `button type="button"` with `role="menuitem"`, full width, left aligned, `text-sm`.
 - Clicking the trigger toggles that menu and closes every other menu.
 - Clicking anywhere outside the dropdown closes every menu.
 - Choosing an item runs the action and closes the menu.
