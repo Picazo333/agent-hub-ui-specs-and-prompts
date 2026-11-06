@@ -13,11 +13,11 @@ The interface is in English.
 ## 2. Tech stack and constraints
 
 - One file, `index.html`, at the repository root. Structure, Tailwind configuration, and behavior all live in that file.
-- Styling uses Tailwind CSS loaded only from `https://cdn.tailwindcss.com`. The page sets `tailwind.config = { darkMode: 'class' }` in a script so `dark:` utilities follow the `dark` class on `<html>`.
+- Styling uses Tailwind CSS loaded only from `https://cdn.tailwindcss.com`. The page sets `tailwind.config` with `darkMode: "class"` so `dark:` utilities follow the `dark` class on `<html>`. The same config holds the color tokens in section 5 and the font families in the next bullet. There is no other theme.
 - No custom CSS file. No `<style>` block. No `style` attribute anywhere in `index.html`.
 - Behavior uses one vanilla JavaScript block at the end of `index.html`. No React, Vue, jQuery, Alpine, or other library. No bundler and no npm build.
 - No network calls for data. No form is submitted. No live search.
-- Fonts are the Tailwind `font-sans` system stack. Do not load a font CDN.
+- Fonts are set in `theme.extend.fontFamily` and are not loaded from a font CDN. `font-sans` is `Arial, Helvetica, sans-serif` and is the UI face (`font-sans` on `body`). `font-mono` is `Consolas, "Courier New", monospace` and is used only for the system-prompt textarea and the error trace. Title elements (`h1`, `h2`, `h3`, and the top-bar section title) use `font-bold` (700).
 - Icons are inline SVG (Heroicons-style outline, 24×24, `stroke="currentColor"`, `fill="none"`). Do not use an icon font or an image for icons.
 - Local preview may use the template `server.py` (Flask, port 3000). The panel must also open correctly from a static file server.
 
@@ -50,40 +50,70 @@ Switching sections closes any open dropdown, any open modal, and the mobile side
 ```
 
 - Semantic skeleton: `header` (top bar), `nav` (inside `aside`), `main`, and one `section` per view. Listings that are tabular use `table`, `thead`, `tbody`, `tr`, `th` (with `scope="col"`), and `td`. Each table has a `caption` with the class `sr-only`. Agent entries and skill entries are `article` elements. The skill explanation is an `aside`.
-- Page background: `slate-100` in light mode, `slate-950` in dark mode. Text: `slate-900` / `slate-100`.
-- Sidebar: dark in both themes (`slate-900` light, `slate-950` dark), white brand text, width 15rem, full height, sticky. It stays on screen at the `md` breakpoint and up (≥768px). Below 768px it is off-canvas and slides in when the top-bar Menu button is pressed. A backdrop (`slate-900/50`) covers the page while the off-canvas sidebar is open; clicking the backdrop or a nav link closes it. The sidebar is translated with Tailwind classes (`-translate-x-full` and `translate-x-0`), not inline styles.
-- Top bar: white / `slate-900`, bottom border, sticky, `z-20`. Left side: Menu button (visible only below `md`) and the current section title (the same words as the nav label) in an element that is not the page `h1`. The single `h1` is the word "AgentHub" in the sidebar. Right side: the theme toggle.
+- Page background: `bg-canvas` (`#F7F8FA`) in light mode, `dark:bg-canvas-dark` (`#10151C`) in dark mode. Text: `text-ink` (`#18202B`) / `dark:text-ink-dark` (`#F7F8FA`).
+- Sidebar: dark in both themes. Light mode uses `bg-ink` (`#18202B`); dark mode uses `dark:bg-sidebar-dark` (`#0C1117`). The `h1` and idle nav links use `text-canvas` (`#F7F8FA`). The secondary lines ("Admin panel", "Prototype · no backend") use `text-subtle` (`#E7ECF2`). Width 15rem, full height, sticky. It stays on screen at the `md` breakpoint and up (≥768px). Below 768px it is off-canvas and slides in when the top-bar Menu button is pressed. A backdrop (`bg-overlay`, `rgba(0,0,0,.56)`) covers the page while the off-canvas sidebar is open; clicking the backdrop or a nav link closes it. The sidebar is translated with Tailwind classes (`-translate-x-full` and `translate-x-0`), not inline styles. Its border is `border-border` (`#788598`) in both themes.
+- Top bar: `bg-surface` (`#FFFFFF`) / `dark:bg-surface-dark` (`#1B2430`), bottom border `border-border` / `dark:border-border-dark` (`#9AA7B8`), sticky, `z-20`. Left side: Menu button (visible only below `md`) and the current section title (the same words as the nav label) in an element that is not the page `h1`. The single `h1` is the word "AgentHub" in the sidebar. Right side: the theme toggle. Text on the bar is `text-ink` / `dark:text-ink-dark`.
 - Main padding: `p-4` below `md`, `p-6` from `md` up. Content is `min-w-0` so tables can scroll instead of widening the page.
 - Tables sit in a `overflow-x-auto` wrapper. On a 768px viewport the sidebar and the active section are both usable without overlapping; wide tables scroll horizontally inside the wrapper.
 - On a 1280px viewport the four metric cards sit on one row. From 640px to 1279px they are a 2×2 grid. Below 640px they stack in one column.
-- Cards, menus, and the modal panel use `rounded-xl`, a 1px `slate-200` / `slate-800` border, and `shadow-sm`.
-- Focusable controls use `focus-visible:outline-none` and a 2px indigo ring (`focus-visible:ring-2 focus-visible:ring-indigo-500`).
+- Cards, menus, and the modal panel use `rounded-xl`, a 1px `border-border` / `dark:border-border-dark` border, `bg-surface` / `dark:bg-surface-dark`, and `shadow-sm`.
+- Focusable controls use `focus-visible:outline-none` and a 2px ring with a 2px offset. On light content surfaces the ring is `focus` (`#164DCC`) and the offset is `surface`. In dark mode those controls use `ring-canvas` (`#F7F8FA`) and offset `surface-dark`, because `#164DCC` is below 3:1 on the dark surfaces. Sidebar links use `ring-canvas` in both themes, with offset `ink` in light mode and `sidebar-dark` in dark mode.
+- The footer under `main` stays `bg-surface` (`#FFFFFF`) in both themes, with a `border-border` top rule and `text-muted` (`#505E70`). It is the lockup plate and is not switched to a dark token.
 - A visually hidden `aria-live="polite"` region (`#action-status`, class `sr-only`) announces deletes and resolve actions.
 
 ## 5. Color and badges
 
-Accent for the active nav item and primary emphasis: indigo (`bg-indigo-600` for the active link, indigo tint for the skill explanation).
+Every color in `index.html` is one of the tokens below, declared in `tailwind.config` under `theme.extend.colors`. Light tokens are the SIGNAL set. Dark tokens exist because this prototype must keep a `dark:` theme; SIGNAL does not define them. No other hex value is used.
 
-Status and type badges are pills: `inline-flex`, `rounded-full`, `px-2 py-0.5`, `text-xs`, `font-medium`.
+| Token | Value | Use |
+| --- | --- | --- |
+| `canvas` | `#F7F8FA` | Light page background. Also the light text on the dark sidebar (`text-canvas`) and the focus ring on dark surfaces and on the sidebar (`ring-canvas`). Idle nav hover is `hover:bg-canvas/10` (the same color at 10% opacity). |
+| `surface` | `#FFFFFF` | Light cards, top bar, menus, modal panel, tables, chart placeholder, and the footer in both themes. Also the light focus-ring offset. |
+| `ink` | `#18202B` | Light body text, and the sidebar background in light mode (`bg-ink`). Also the light focus-ring offset on sidebar links, and the code-trace background (`bg-ink`) with `text-canvas`. |
+| `muted` | `#505E70` | Secondary text on light surfaces: descriptions, table headers, the `⋮` trigger, and the footer credit. |
+| `border` | `#788598` | 1px borders and dividers on light surfaces, and the sidebar border in both themes. |
+| `subtle` | `#E7ECF2` | Light hover fill, skill-name pills, and the neutral badge background. Also the secondary sidebar text (`text-subtle`). |
+| `action` | `#B53A17` | Active nav link and the sidebar mark, with `on-action` text. |
+| `on-action` | `#FFFFFF` | Text on `action`. |
+| `action-hover` | `#8F2D12` | Declared in the config. No control uses it. |
+| `action-pressed` | `#73230E` | Dark-mode hover of the Delete item (`dark:hover:bg-action-pressed`). |
+| `selected` | `#FCEDE6` | Light hover of Delete, the skill-explanation background, and the noscript notice background. |
+| `focus` | `#164DCC` | Focus ring on light content controls only. |
+| `danger` | `#A32A26` | Delete text in light mode. Solid badge and dark-mode Delete fill. |
+| `success` | `#236344` | Solid badge and the Total revenue icon tile. |
+| `warning` | `#765000` | Solid badge, the Discount losses icon tile, and the noscript border. |
+| `info` | `#204EA0` | Solid badge and the Active agents icon tile. |
+| `on-status` | `#FFFFFF` | Text on `success`, `warning`, `danger`, and `info` fills, including the metric icon tiles. |
+| `link` | `#B53A17` | Declared in the config. Same value as `action`. No control uses it. |
+| `overlay` | `rgba(0,0,0,.56)` | Sidebar backdrop and modal backdrop (`bg-overlay`). |
+| `canvas-dark` | `#10151C` | Dark page background. |
+| `surface-dark` | `#1B2430` | Dark cards, top bar, menus, modal panel, tables, and chart placeholder. Also the dark focus-ring offset on content controls. |
+| `ink-dark` | `#F7F8FA` | Text on dark surfaces. Same hex as `canvas`. |
+| `muted-dark` | `#C5D0DC` | Secondary text on dark surfaces. |
+| `border-dark` | `#9AA7B8` | Borders and dividers on dark content surfaces. |
+| `subtle-dark` | `#2A3646` | Dark hover fill, dark skill pills, and the dark neutral badge. |
+| `sidebar-dark` | `#0C1117` | Sidebar background in dark mode, and the dark focus-ring offset on sidebar links. |
 
-| Token | Light classes | Dark classes | Used for |
-| --- | --- | --- | --- |
-| Emerald | `bg-emerald-100 text-emerald-800` | `dark:bg-emerald-950 dark:text-emerald-200` | Active, Resolved |
-| Amber | `bg-amber-100 text-amber-800` | `dark:bg-amber-950 dark:text-amber-200` | Suspended, Authentication |
-| Rose | `bg-rose-100 text-rose-800` | `dark:bg-rose-950 dark:text-rose-200` | Failing, Timeout, Tool failure |
-| Violet | `bg-violet-100 text-violet-800` | `dark:bg-violet-950 dark:text-violet-200` | Parse error |
-| Orange | `bg-orange-100 text-orange-800` | `dark:bg-orange-950 dark:text-orange-200` | Empty response |
-| Yellow | `bg-yellow-100 text-yellow-800` | `dark:bg-yellow-950 dark:text-yellow-200` | Rate limit |
-| Slate | `bg-slate-200 text-slate-700` | `dark:bg-slate-800 dark:text-slate-200` | Inactive, Ended, Configuration |
+Status and type badges are pills: `inline-flex`, `rounded-full`, `px-2 py-0.5`, `text-xs`, `font-medium`. Solid status badges use the same classes in both themes.
 
-Metric cards use a distinct tinted icon tile:
+| Token | Classes | Used for |
+| --- | --- | --- |
+| `success` | `bg-success text-on-status` | Active, Resolved |
+| `warning` | `bg-warning text-on-status` | Suspended, Authentication, Rate limit, Empty response |
+| `danger` | `bg-danger text-on-status` | Failing, Timeout, Tool failure |
+| `info` | `bg-info text-on-status` | Parse error |
+| `subtle` | `bg-subtle text-ink` and `dark:bg-subtle-dark dark:text-ink-dark` | Inactive, Ended, Configuration |
+
+Metric icon tiles use `text-on-status` on a solid fill:
 
 | Metric | Tile |
 | --- | --- |
-| Total revenue | emerald |
-| Discount losses | amber |
-| Active agents | indigo |
-| Failing agents | rose |
+| Total revenue | `bg-success` |
+| Discount losses | `bg-warning` |
+| Active agents | `bg-info` |
+| Failing agents | `bg-danger` |
+
+The active nav item is `bg-action text-on-action`. The skill explanation is `bg-selected` with `border-border` and `text-ink` (`dark:bg-subtle-dark`, `dark:border-border-dark`, `dark:text-ink-dark`). The failing-agents icon tile is the only `bg-danger` on the dashboard.
 
 ## 6. Shared behaviors
 
@@ -104,8 +134,8 @@ Every repeated entry (each user row, agent card, skill card, contract row, and e
 
 One modal shell is reused.
 
-- Root: `#modal-root`, `hidden` when closed, `fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4`.
-- Panel: `role="dialog"`, `aria-modal="true"`, `aria-labelledby="modal-title"`, `w-full max-w-2xl max-h-[85vh] overflow-y-auto`, surface colors white / `slate-900`.
+- Root: `#modal-root`, `hidden` when closed, `fixed inset-0 z-50 flex items-center justify-center bg-overlay p-4`.
+- Panel: `role="dialog"`, `aria-modal="true"`, `aria-labelledby="modal-title"`, `w-full max-w-2xl max-h-[85vh] overflow-y-auto`, surface colors `bg-surface` / `dark:bg-surface-dark`.
 - Header row: `h2#modal-title` and a `button type="button"` labeled "Close" (`data-modal-close`).
 - Body: `#modal-body`.
 - Opening a modal closes dropdowns and the mobile sidebar, removes the `hidden` attribute, sets `document.body` to `overflow-hidden`, and focuses the Close button.
@@ -118,7 +148,7 @@ One modal shell is reused.
 These actions change only the current page. Nothing is stored.
 
 - Delete removes that entry's `tr` or `article` from the DOM and sets `#action-status` to `Deleted {name}.`
-- Mark as resolved replaces the error type badge text with `Resolved` and switches the badge to the emerald classes in section 5. The "Mark as resolved" item becomes `disabled` and its text becomes `Resolved`. `#action-status` becomes `Marked {agent name} error as resolved.`
+- Mark as resolved replaces the error type badge text with `Resolved` and switches the badge to the success classes in section 5. The "Mark as resolved" item becomes `disabled` and its text becomes `Resolved`. `#action-status` becomes `Marked {agent name} error as resolved.`
 
 ### 6.4 Collapsible skill list
 
@@ -228,13 +258,13 @@ The View detail modal shows the contract id as the title (`Contract CTR-1042`), 
 
 | id | Timestamp | Agent | Type | Badge | Description |
 | --- | --- | --- | --- | --- | --- |
-| err-1 | 2026-11-05 14:22 UTC | Inbox Triage | Timeout | rose | Web Browse exceeded 30s on status.orbitmail.co. |
-| err-2 | 2026-11-05 09:03 UTC | Inbox Triage | Authentication | amber | Email Draft token was rejected by the client mailbox. |
-| err-3 | 2026-11-04 18:47 UTC | Atlas Research | Rate limit | yellow | Web Browse hit 60 requests/hour for Northwind public docs. |
-| err-4 | 2026-11-04 11:16 UTC | Ledger Clerk | Parse error | violet | Spreadsheet skill could not read sheet Q4-accruals. |
-| err-5 | 2026-11-03 16:02 UTC | Compliance Watch | Tool failure | rose | Policy Check returned an empty checklist. |
-| err-6 | 2026-11-02 08:28 UTC | Field Notes | Configuration | slate | Calendar skill is disabled because the agent is inactive. |
-| err-7 | 2026-11-01 19:40 UTC | Inbox Triage | Empty response | orange | Email Draft returned no body for thread ORB-441. |
+| err-1 | 2026-11-05 14:22 UTC | Inbox Triage | Timeout | danger | Web Browse exceeded 30s on status.orbitmail.co. |
+| err-2 | 2026-11-05 09:03 UTC | Inbox Triage | Authentication | warning | Email Draft token was rejected by the client mailbox. |
+| err-3 | 2026-11-04 18:47 UTC | Atlas Research | Rate limit | warning | Web Browse hit 60 requests/hour for Northwind public docs. |
+| err-4 | 2026-11-04 11:16 UTC | Ledger Clerk | Parse error | info | Spreadsheet skill could not read sheet Q4-accruals. |
+| err-5 | 2026-11-03 16:02 UTC | Compliance Watch | Tool failure | danger | Policy Check returned an empty checklist. |
+| err-6 | 2026-11-02 08:28 UTC | Field Notes | Configuration | subtle | Calendar skill is disabled because the agent is inactive. |
+| err-7 | 2026-11-01 19:40 UTC | Inbox Triage | Empty response | warning | Email Draft returned no body for thread ORB-441. |
 
 Traces, shown in `pre` with `whitespace-pre-wrap font-mono text-xs` inside the modal:
 
@@ -286,7 +316,7 @@ The same agent names Atlas Research, Ledger Clerk, Inbox Triage, Field Notes, an
 
 1. A table of the seven errors in section 7.6 with columns Timestamp, Agent, Type, Description, and Actions. Type is a color-coded badge using the badge column of that table.
 2. Each row's `⋮` menu contains View detail and Mark as resolved. View detail opens the modal with the full trace for that id.
-3. Mark as resolved updates the badge to the emerald Resolved state defined in section 6.3 and does not open the modal.
+3. Mark as resolved updates the badge to the success Resolved state defined in section 6.3 and does not open the modal.
 
 ## 9. Component inventory
 
@@ -319,7 +349,7 @@ The same agent names Atlas Research, Ledger Clerk, Inbox Triage, Field Notes, an
 11. Configure on Atlas Research opens a modal whose textarea value starts with `You are Atlas Research` and is not read-only.
 12. The Skills section shows the heading `What is a skill?` and six skills. Web Browse reads `Enabled on 3 agents`. Document Read reads `Enabled on 4 agents`. Each skill has View detail and Delete.
 13. Agent Contracts renders five rows. The Atlas row shows Northwind Analytics, Atlas Research, and `$4,800`. View detail shows Document Read and `$900` in the itemized breakdown.
-14. Error Log renders seven rows. Timeout uses the rose badge, Rate limit uses the yellow badge, and Configuration uses the slate badge. View detail on the first row shows `TimeoutError`.
+14. Error Log renders seven rows. Timeout uses the danger badge, Rate limit uses the warning badge, and Configuration uses the subtle badge. View detail on the first row shows `TimeoutError`.
 15. Mark as resolved on an error changes that badge text to `Resolved` and does not open the modal.
 16. Delete on Luis Ortega removes that user's row and leaves the other users in place.
 17. Opening any `⋮` menu and then clicking outside it closes the menu. Opening a second menu closes the first.
