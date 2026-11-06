@@ -136,6 +136,7 @@ Each agent card contains one collapsible region, collapsed by default.
 - Dark mode (`class="dark"` on `<html>`): the button shows a sun icon and the word `Light`. `aria-label` is `Switch to light mode`. `aria-pressed` is `true`.
 - Every surface listed in this spec includes `dark:` classes: page, top bar, cards, tables, dropdowns, modal, badges, borders, muted text, chart placeholder, and form control.
 - The class lives on `<html>`, so choosing a mode and then following a sidebar link keeps that mode. Section changes must not remove the class.
+- A script in `<head>` reads `localStorage` key `agenthub-theme` (`light` or `dark`) before the body paints. If the key is missing, it uses `prefers-color-scheme`. The toggle writes the same key, so a reload keeps the choice.
 
 ### 6.6 Configure textarea
 
@@ -185,7 +186,7 @@ The users table shows Name, Email, Plan, and Status. Company, Joined, Agent, and
 | skill-sheet | Spreadsheet | Reads tabular files and computes sums, averages, and mismatches. | 1 — Ledger Clerk |
 | skill-policy | Policy Check | Scores a document against a fixed checklist and returns pass or fail per item. | 1 — Compliance Watch |
 
-The card shows the description and the sentence `Enabled on {n} agents`. The modal repeats the description, the count, and the agent names as a list.
+The card shows the description and the sentence `Enabled on {n} agent` when the count is 1, or `Enabled on {n} agents` otherwise. The modal repeats the description, the count, and the agent names as a list.
 
 ### 7.4 Agents
 
@@ -272,7 +273,7 @@ The same agent names Atlas Research, Ledger Clerk, Inbox Triage, Field Notes, an
 ### 8.4 Skills
 
 1. An `aside` at the top of the section explains what a skill is. Heading: `What is a skill?` Body: `A skill is a capability that can be attached to an agent — for example browsing the web, reading documents, or managing a calendar. A skill does not run by itself. It becomes available only when an agent has it enabled and a contract includes it.`
-2. A responsive catalog (one column, two columns from `md`) of six articles. Each article shows the skill name, the description, and `Enabled on {n} agents` using the counts in section 7.3.
+2. A responsive catalog (one column, two columns from `md`) of six articles. Each article shows the skill name, the description, and the enabled-agent sentence from section 7.3. Counts of 1 use `agent`; every larger count uses `agents`.
 3. Each article's `⋮` menu contains View detail and Delete. View detail opens the modal with the description, the count, and the list of agent names.
 
 ### 8.5 Agent Contracts
@@ -328,4 +329,4 @@ The same agent names Atlas Research, Ledger Clerk, Inbox Triage, Field Notes, an
 
 ## 11. Out of scope
 
-Form submission, live search, pagination, real chart data, authentication, persistence of deletes, and any HTTP API are out of scope. The theme is not required to survive a reload. Keyboard Escape handling is not required for the first build.
+Form submission, live search, pagination, real chart data, authentication, persistence of deletes, and any HTTP API are out of scope. Escape closes the topmost overlay: the modal first, otherwise an open action menu, otherwise the mobile sidebar. Focus returns to the control that opened it.

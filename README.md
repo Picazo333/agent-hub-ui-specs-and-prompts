@@ -37,7 +37,8 @@ Tailwind se carga desde `https://cdn.tailwindcss.com`, así que la página neces
 
 - Un solo `index.html`. La navegación cambia el hash y muestra una sección. No recarga la página, así el modo claro u oscuro se mantiene al pasar de una sección a otra.
 - Tailwind solo por CDN, con `darkMode: 'class'`. No hay archivo CSS ni atributos `style`.
-- El modo oscuro añade la clase `dark` en `<html>` y los colores usan utilidades `dark:`.
+- El modo oscuro añade la clase `dark` en `<html>` y los colores usan utilidades `dark:`. La elección se guarda en `localStorage` (`agenthub-theme`). La primera visita sigue `prefers-color-scheme`.
+- Escape cierra el modal, si no hay modal el menú abierto, y si no el sidebar móvil.
 - Los menús `⋮` se mueven al final de `body` mientras están abiertos y se colocan con clases de Tailwind, para que el scroll horizontal de las tablas no los recorte.
 - Las listas de skills de cada agente empiezan colapsadas. Abrirlas anima `grid-template-rows` durante 300 ms.
 - Eliminar una fila y marcar un error como resuelto cambian solo la página actual. El texto del system prompt se conserva en la sesión si se edita y se vuelve a abrir Configure.

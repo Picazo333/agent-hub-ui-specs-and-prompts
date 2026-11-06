@@ -3,6 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("agenthub-theme");
+          var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+          if (theme === "dark") document.documentElement.classList.add("dark");
+        } catch (error) {}
+      })();
+    </script>
     <title>AgentHub Admin</title>
     <meta
       name="description"
@@ -507,7 +516,7 @@
                   </div>
                 </div>
                 <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Drafts email text. Sending stays with the client.</p>
-                <p class="mt-3 text-sm font-medium">Enabled on 1 agents</p>
+                <p class="mt-3 text-sm font-medium">Enabled on 1 agent</p>
               </article>
               <article data-record data-id="skill-sheet" data-name="Spreadsheet" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
                 <div class="flex items-start justify-between gap-3">
@@ -521,7 +530,7 @@
                   </div>
                 </div>
                 <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Reads tabular files and computes sums, averages, and mismatches.</p>
-                <p class="mt-3 text-sm font-medium">Enabled on 1 agents</p>
+                <p class="mt-3 text-sm font-medium">Enabled on 1 agent</p>
               </article>
               <article data-record data-id="skill-policy" data-name="Policy Check" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
                 <div class="flex items-start justify-between gap-3">
@@ -535,7 +544,7 @@
                   </div>
                 </div>
                 <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Scores a document against a fixed checklist and returns pass or fail per item.</p>
-                <p class="mt-3 text-sm font-medium">Enabled on 1 agents</p>
+                <p class="mt-3 text-sm font-medium">Enabled on 1 agent</p>
               </article>
             </div>
           </section>
@@ -852,9 +861,9 @@
           "skill-browse": { kind: "skill", title: "Web Browse", description: "Opens public web pages and extracts visible text. It cannot log in or submit forms.", count: "Enabled on 3 agents", agents: ["Atlas Research", "Inbox Triage", "Compliance Watch"] },
           "skill-docs": { kind: "skill", title: "Document Read", description: "Reads PDF and text documents supplied by the client and quotes passages with page numbers.", count: "Enabled on 4 agents", agents: ["Atlas Research", "Ledger Clerk", "Field Notes", "Compliance Watch"] },
           "skill-calendar": { kind: "skill", title: "Calendar", description: "Reads busy time and proposes events. It cannot invite attendees.", count: "Enabled on 2 agents", agents: ["Atlas Research", "Field Notes"] },
-          "skill-email": { kind: "skill", title: "Email Draft", description: "Drafts email text. Sending stays with the client.", count: "Enabled on 1 agents", agents: ["Inbox Triage"] },
-          "skill-sheet": { kind: "skill", title: "Spreadsheet", description: "Reads tabular files and computes sums, averages, and mismatches.", count: "Enabled on 1 agents", agents: ["Ledger Clerk"] },
-          "skill-policy": { kind: "skill", title: "Policy Check", description: "Scores a document against a fixed checklist and returns pass or fail per item.", count: "Enabled on 1 agents", agents: ["Compliance Watch"] },
+          "skill-email": { kind: "skill", title: "Email Draft", description: "Drafts email text. Sending stays with the client.", count: "Enabled on 1 agent", agents: ["Inbox Triage"] },
+          "skill-sheet": { kind: "skill", title: "Spreadsheet", description: "Reads tabular files and computes sums, averages, and mismatches.", count: "Enabled on 1 agent", agents: ["Ledger Clerk"] },
+          "skill-policy": { kind: "skill", title: "Policy Check", description: "Scores a document against a fixed checklist and returns pass or fail per item.", count: "Enabled on 1 agent", agents: ["Compliance Watch"] },
           "CTR-1042": { kind: "contract", title: "Contract CTR-1042", fields: [["Client", "Northwind Analytics"], ["Agent", "Atlas Research"], ["Start", "2026-09-01"], ["End", "2026-11-30"], ["Status", "Active"], ["Months billed", "3"]], items: [["Web Browse", "$400"], ["Document Read", "$900"], ["Calendar", "$300"]], monthly: "$1,600", paid: "$4,800" },
           "CTR-1048": { kind: "contract", title: "Contract CTR-1048", fields: [["Client", "Lumen Labs"], ["Agent", "Ledger Clerk"], ["Start", "2026-08-01"], ["End", "2026-11-30"], ["Status", "Active"], ["Months billed", "4"]], items: [["Document Read", "$800"], ["Spreadsheet", "$700"]], monthly: "$1,500", paid: "$6,000" },
           "CTR-0988": { kind: "contract", title: "Contract CTR-0988", fields: [["Client", "Orbit Mail"], ["Agent", "Inbox Triage"], ["Start", "2026-10-01"], ["End", "2026-10-31"], ["Status", "Ended"], ["Months billed", "1"]], items: [["Email Draft", "$600"], ["Web Browse", "$500"]], monthly: "$1,100", paid: "$1,100" },
@@ -1193,7 +1202,31 @@
 
         themeToggle.addEventListener("click", function () {
           document.documentElement.classList.toggle("dark");
+          try {
+            localStorage.setItem("agenthub-theme", document.documentElement.classList.contains("dark") ? "dark" : "light");
+          } catch (error) {}
           syncThemeButton();
+        });
+
+        document.addEventListener("keydown", function (event) {
+          if (event.key !== "Escape") return;
+          if (!modalRoot.hidden) {
+            event.preventDefault();
+            closeModal(true);
+            return;
+          }
+          var openTrigger = document.querySelector('[data-dropdown-trigger][aria-expanded="true"]');
+          if (openTrigger) {
+            event.preventDefault();
+            closeDropdowns();
+            openTrigger.focus();
+            return;
+          }
+          if (menuButton.getAttribute("aria-expanded") === "true") {
+            event.preventDefault();
+            closeSidebar();
+            menuButton.focus();
+          }
         });
 
         var initial = location.hash.replace("#", "");
