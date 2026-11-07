@@ -13,55 +13,94 @@
       })();
     </script>
     <title>AgentHub Admin</title>
+    <link rel="icon" href="data:," />
     <meta
       name="description"
       content="AgentHub internal admin panel prototype. Hardcoded data, Tailwind CSS, and vanilla JavaScript."
     />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      tailwind.config = { darkMode: "class" };
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Arial", "Helvetica", "sans-serif"],
+              mono: ["Consolas", '"Courier New"', "monospace"],
+            },
+            colors: {
+              canvas: "#F7F8FA",
+              surface: "#FFFFFF",
+              ink: "#18202B",
+              muted: "#505E70",
+              border: "#788598",
+              subtle: "#E7ECF2",
+              action: "#B53A17",
+              "on-action": "#FFFFFF",
+              "action-hover": "#8F2D12",
+              "action-pressed": "#73230E",
+              selected: "#FCEDE6",
+              focus: "#164DCC",
+              danger: "#A32A26",
+              success: "#236344",
+              warning: "#765000",
+              info: "#204EA0",
+              "on-status": "#FFFFFF",
+              link: "#B53A17",
+              overlay: "rgba(0,0,0,.56)",
+              "canvas-dark": "#10151C",
+              "surface-dark": "#1B2430",
+              "ink-dark": "#F7F8FA",
+              "muted-dark": "#C5D0DC",
+              "border-dark": "#9AA7B8",
+              "subtle-dark": "#2A3646",
+              "sidebar-dark": "#0C1117",
+            },
+          },
+        },
+      };
     </script>
   </head>
-  <body class="h-full bg-slate-100 font-sans text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+  <body class="h-full bg-canvas font-sans text-ink antialiased dark:bg-canvas-dark dark:text-ink-dark">
     <p id="action-status" class="sr-only" aria-live="polite"></p>
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:text-slate-900"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-surface focus:px-3 focus:py-2 focus:text-ink"
       >Skip to content</a
     >
 
-    <div id="sidebar-backdrop" hidden class="fixed inset-0 z-30 bg-slate-900/50 md:hidden"></div>
+    <div id="sidebar-backdrop" hidden class="fixed inset-0 z-30 bg-overlay md:hidden"></div>
 
     <div class="min-h-full md:grid md:grid-cols-[15rem_minmax(0,1fr)]">
       <aside
         id="sidebar"
-        class="fixed inset-y-0 left-0 z-40 flex w-60 -translate-x-full flex-col border-r border-slate-800 bg-slate-900 transition-transform duration-200 motion-reduce:transition-none dark:bg-slate-950 md:sticky md:top-0 md:z-auto md:h-screen md:w-auto md:translate-x-0"
+        class="fixed inset-y-0 left-0 z-40 flex w-60 -translate-x-full flex-col border-r border-border bg-ink transition-transform duration-200 motion-reduce:transition-none dark:bg-sidebar-dark md:sticky md:top-0 md:z-auto md:h-screen md:w-auto md:translate-x-0"
       >
-        <div class="flex h-16 items-center gap-3 border-b border-slate-800 px-4">
-          <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 text-sm font-bold text-white" aria-hidden="true">A</span>
+        <div class="flex h-16 items-center gap-3 border-b border-border px-4">
+          <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-action text-sm font-bold text-on-action" aria-hidden="true">A</span>
           <div>
-            <h1 class="text-base font-semibold text-white">AgentHub</h1>
-            <p class="text-xs text-slate-400">Admin panel</p>
+            <h1 class="text-base font-bold text-canvas">AgentHub</h1>
+            <p class="text-xs text-subtle">Admin panel</p>
           </div>
         </div>
         <nav class="flex flex-1 flex-col gap-1 p-3" aria-label="Sections">
-          <a href="#dashboard" data-nav class="flex items-center gap-2 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400" aria-current="page">Dashboard</a>
-          <a href="#users" data-nav class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">User Management</a>
-          <a href="#agents" data-nav class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">Agent Management</a>
-          <a href="#skills" data-nav class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">Skills</a>
-          <a href="#contracts" data-nav class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">Agent Contracts</a>
-          <a href="#errors" data-nav class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">Error Log</a>
+          <a href="#dashboard" data-nav class="flex items-center gap-2 rounded-lg bg-action px-3 py-2 text-sm font-medium text-on-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canvas focus-visible:ring-offset-2 focus-visible:ring-offset-ink dark:focus-visible:ring-offset-sidebar-dark" aria-current="page">Dashboard</a>
+          <a href="#users" data-nav class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-canvas hover:bg-canvas/10 hover:text-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canvas focus-visible:ring-offset-2 focus-visible:ring-offset-ink dark:focus-visible:ring-offset-sidebar-dark">User Management</a>
+          <a href="#agents" data-nav class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-canvas hover:bg-canvas/10 hover:text-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canvas focus-visible:ring-offset-2 focus-visible:ring-offset-ink dark:focus-visible:ring-offset-sidebar-dark">Agent Management</a>
+          <a href="#skills" data-nav class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-canvas hover:bg-canvas/10 hover:text-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canvas focus-visible:ring-offset-2 focus-visible:ring-offset-ink dark:focus-visible:ring-offset-sidebar-dark">Skills</a>
+          <a href="#contracts" data-nav class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-canvas hover:bg-canvas/10 hover:text-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canvas focus-visible:ring-offset-2 focus-visible:ring-offset-ink dark:focus-visible:ring-offset-sidebar-dark">Agent Contracts</a>
+          <a href="#errors" data-nav class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-canvas hover:bg-canvas/10 hover:text-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canvas focus-visible:ring-offset-2 focus-visible:ring-offset-ink dark:focus-visible:ring-offset-sidebar-dark">Error Log</a>
         </nav>
-        <p class="border-t border-slate-800 px-4 py-3 text-xs text-slate-500">Prototype · no backend</p>
+        <p class="border-t border-border px-4 py-3 text-xs text-subtle">Prototype · no backend</p>
       </aside>
 
       <div class="min-w-0">
-        <header class="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900">
+        <header class="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-border bg-surface px-4 py-3 dark:border-border-dark dark:bg-surface-dark">
           <div class="flex items-center gap-3">
             <button
               type="button"
               id="menu-button"
-              class="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 md:hidden dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-800"
+              class="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-medium text-ink hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark md:hidden dark:border-border-dark dark:text-ink-dark dark:hover:bg-subtle-dark"
               aria-controls="sidebar"
               aria-expanded="false"
             >
@@ -70,12 +109,12 @@
               </svg>
               Menu
             </button>
-            <p id="section-title" class="text-lg font-semibold tracking-tight">Dashboard</p>
+            <p id="section-title" class="text-lg font-bold tracking-tight">Dashboard</p>
           </div>
           <button
             type="button"
             id="theme-toggle"
-            class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
+            class="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-sm font-medium text-ink shadow-sm hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:border-border-dark dark:bg-surface-dark dark:text-ink-dark dark:hover:bg-subtle-dark"
             aria-pressed="false"
             aria-label="Switch to dark mode"
           >
@@ -91,35 +130,35 @@
 
         <main id="main" class="min-w-0 p-4 md:p-6">
           <noscript>
-            <p class="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900">This prototype needs JavaScript for navigation, menus, modals, and dark mode.</p>
+            <p class="mb-4 rounded-lg border border-warning bg-selected px-3 py-2 text-sm text-ink">This prototype needs JavaScript for navigation, menus, modals, and dark mode.</p>
           </noscript>
 
           <section id="dashboard" aria-labelledby="dashboard-heading" class="mx-auto max-w-6xl">
-            <h2 id="dashboard-heading" tabindex="-1" class="text-2xl font-semibold tracking-tight focus:outline-none">Dashboard</h2>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">November 2026 snapshot for every client on the platform.</p>
+            <h2 id="dashboard-heading" tabindex="-1" class="text-2xl font-bold tracking-tight focus:outline-none">Dashboard</h2>
+            <p class="mt-1 text-sm text-muted dark:text-muted-dark">November 2026 snapshot for every client on the platform.</p>
             <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
                   <div>
-                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Total revenue</p>
+                    <p class="text-sm font-medium text-muted dark:text-muted-dark">Total revenue</p>
                     <p class="mt-2 text-2xl font-semibold tracking-tight">$5,200</p>
-                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">This month</p>
+                    <p class="mt-1 text-xs text-muted dark:text-muted-dark">This month</p>
                   </div>
-                  <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                  <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-success text-on-status">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
                   </span>
                 </div>
               </article>
-              <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
                   <div>
-                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Discount losses</p>
+                    <p class="text-sm font-medium text-muted dark:text-muted-dark">Discount losses</p>
                     <p class="mt-2 text-2xl font-semibold tracking-tight">$480</p>
-                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Coupons and credits</p>
+                    <p class="mt-1 text-xs text-muted dark:text-muted-dark">Coupons and credits</p>
                   </div>
-                  <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+                  <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-warning text-on-status">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
                       <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
@@ -127,28 +166,28 @@
                   </span>
                 </div>
               </article>
-              <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
                   <div>
-                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Active agents</p>
+                    <p class="text-sm font-medium text-muted dark:text-muted-dark">Active agents</p>
                     <p class="mt-2 text-2xl font-semibold tracking-tight">3</p>
-                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Across all clients</p>
+                    <p class="mt-1 text-xs text-muted dark:text-muted-dark">Across all clients</p>
                   </div>
-                  <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                  <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-info text-on-status">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
                   </span>
                 </div>
               </article>
-              <article class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
                   <div>
-                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Failing agents</p>
+                    <p class="text-sm font-medium text-muted dark:text-muted-dark">Failing agents</p>
                     <p class="mt-2 text-2xl font-semibold tracking-tight">1</p>
-                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">Needs attention</p>
+                    <p class="mt-1 text-xs text-muted dark:text-muted-dark">Needs attention</p>
                   </div>
-                  <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300">
+                  <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-danger text-on-status">
                     <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
                     </svg>
@@ -156,27 +195,27 @@
                 </div>
               </article>
             </div>
-            <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">November 2026 · hardcoded prototype</p>
+            <p class="mt-4 text-sm text-muted dark:text-muted-dark">November 2026 · hardcoded prototype</p>
             <div
               role="img"
               aria-label="Weekly activity chart placeholder"
-              class="mt-6 flex h-64 w-full flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-900"
+              class="mt-6 flex h-64 w-full flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-surface dark:border-border-dark dark:bg-surface-dark"
             >
-              <svg class="mb-2 h-8 w-8 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <svg class="mb-2 h-8 w-8 text-muted dark:text-muted-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
               </svg>
-              <p class="text-sm font-medium text-slate-700 dark:text-slate-200">Weekly activity chart</p>
-              <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Chart data is not connected in this prototype.</p>
+              <p class="text-sm font-medium text-ink dark:text-ink-dark">Weekly activity chart</p>
+              <p class="mt-1 text-sm text-muted dark:text-muted-dark">Chart data is not connected in this prototype.</p>
             </div>
           </section>
 
           <section id="users" hidden aria-labelledby="users-heading" class="mx-auto max-w-6xl">
-            <h2 id="users-heading" tabindex="-1" class="text-2xl font-semibold tracking-tight focus:outline-none">User Management</h2>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Registered client accounts. Plans and statuses are hardcoded.</p>
-            <div class="mt-6 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <h2 id="users-heading" tabindex="-1" class="text-2xl font-bold tracking-tight focus:outline-none">User Management</h2>
+            <p class="mt-1 text-sm text-muted dark:text-muted-dark">Registered client accounts. Plans and statuses are hardcoded.</p>
+            <div class="mt-6 overflow-x-auto rounded-xl border border-border bg-surface shadow-sm dark:border-border-dark dark:bg-surface-dark">
               <table class="min-w-full text-left text-sm">
                 <caption class="sr-only">Registered users</caption>
-                <thead class="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400">
+                <thead class="border-b border-border text-xs uppercase tracking-wide text-muted dark:border-border-dark dark:text-muted-dark">
                   <tr>
                     <th scope="col" class="px-4 py-3 font-medium">Name</th>
                     <th scope="col" class="px-4 py-3 font-medium">Email</th>
@@ -185,93 +224,93 @@
                     <th scope="col" class="px-4 py-3 text-right font-medium">Actions</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
-                  <tr data-record data-id="user-elena" data-name="Elena Vargas" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                <tbody class="divide-y divide-border dark:divide-border-dark">
+                  <tr data-record data-id="user-elena" data-name="Elena Vargas" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="px-4 py-3 font-medium">Elena Vargas</td>
                     <td class="px-4 py-3">elena.vargas@northwind.io</td>
                     <td class="px-4 py-3">Business</td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Active</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-success px-2 py-0.5 text-xs font-medium text-on-status">Active</span></td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-user-elena" aria-label="Actions for Elena Vargas" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-user-elena" role="menu" data-record-id="user-elena" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-user-elena" aria-label="Actions for Elena Vargas" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-user-elena" role="menu" data-record-id="user-elena" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="user-marcus" data-name="Marcus Chen" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="user-marcus" data-name="Marcus Chen" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="px-4 py-3 font-medium">Marcus Chen</td>
                     <td class="px-4 py-3">marcus.chen@lumenlabs.com</td>
                     <td class="px-4 py-3">Enterprise</td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Active</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-success px-2 py-0.5 text-xs font-medium text-on-status">Active</span></td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-user-marcus" aria-label="Actions for Marcus Chen" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-user-marcus" role="menu" data-record-id="user-marcus" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-user-marcus" aria-label="Actions for Marcus Chen" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-user-marcus" role="menu" data-record-id="user-marcus" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="user-priya" data-name="Priya Shah" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="user-priya" data-name="Priya Shah" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="px-4 py-3 font-medium">Priya Shah</td>
                     <td class="px-4 py-3">priya.shah@orbitmail.co</td>
                     <td class="px-4 py-3">Pro</td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Active</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-success px-2 py-0.5 text-xs font-medium text-on-status">Active</span></td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-user-priya" aria-label="Actions for Priya Shah" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-user-priya" role="menu" data-record-id="user-priya" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-user-priya" aria-label="Actions for Priya Shah" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-user-priya" role="menu" data-record-id="user-priya" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="user-jonah" data-name="Jonah Adler" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="user-jonah" data-name="Jonah Adler" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="px-4 py-3 font-medium">Jonah Adler</td>
                     <td class="px-4 py-3">jonah.adler@fieldnote.dev</td>
                     <td class="px-4 py-3">Starter</td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-200">Suspended</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-warning px-2 py-0.5 text-xs font-medium text-on-status">Suspended</span></td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-user-jonah" aria-label="Actions for Jonah Adler" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-user-jonah" role="menu" data-record-id="user-jonah" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-user-jonah" aria-label="Actions for Jonah Adler" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-user-jonah" role="menu" data-record-id="user-jonah" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="user-amira" data-name="Amira Hassan" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="user-amira" data-name="Amira Hassan" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="px-4 py-3 font-medium">Amira Hassan</td>
                     <td class="px-4 py-3">amira.hassan@cedarops.com</td>
                     <td class="px-4 py-3">Business</td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Active</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-success px-2 py-0.5 text-xs font-medium text-on-status">Active</span></td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-user-amira" aria-label="Actions for Amira Hassan" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-user-amira" role="menu" data-record-id="user-amira" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-user-amira" aria-label="Actions for Amira Hassan" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-user-amira" role="menu" data-record-id="user-amira" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="user-luis" data-name="Luis Ortega" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="user-luis" data-name="Luis Ortega" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="px-4 py-3 font-medium">Luis Ortega</td>
                     <td class="px-4 py-3">luis.ortega@picoform.io</td>
                     <td class="px-4 py-3">Pro</td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-slate-200 px-2 py-0.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Inactive</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-subtle px-2 py-0.5 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Inactive</span></td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-user-luis" aria-label="Actions for Luis Ortega" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-user-luis" role="menu" data-record-id="user-luis" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-user-luis" aria-label="Actions for Luis Ortega" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-user-luis" role="menu" data-record-id="user-luis" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                         </div>
                       </div>
                     </td>
@@ -282,170 +321,170 @@
           </section>
 
           <section id="agents" hidden aria-labelledby="agents-heading" class="mx-auto max-w-6xl">
-            <h2 id="agents-heading" tabindex="-1" class="text-2xl font-semibold tracking-tight focus:outline-none">Agent Management</h2>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Agents rented by clients, with the skills attached to each one.</p>
+            <h2 id="agents-heading" tabindex="-1" class="text-2xl font-bold tracking-tight focus:outline-none">Agent Management</h2>
+            <p class="mt-1 text-sm text-muted dark:text-muted-dark">Agents rented by clients, with the skills attached to each one.</p>
             <div class="mt-6 grid gap-4">
-              <article data-record data-id="atlas" data-name="Atlas Research" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article data-record data-id="atlas" data-name="Atlas Research" class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
                   <div>
-                    <h3 class="text-base font-semibold">Atlas Research</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400">Elena Vargas · Northwind Analytics</p>
+                    <h3 class="text-base font-bold">Atlas Research</h3>
+                    <p class="text-sm text-muted dark:text-muted-dark">Elena Vargas · Northwind Analytics</p>
                   </div>
                   <div class="flex items-center gap-2">
-                    <span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Active</span>
+                    <span class="inline-flex items-center rounded-full bg-success px-2 py-0.5 text-xs font-medium text-on-status">Active</span>
                     <div class="relative" data-dropdown>
-                      <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-atlas" aria-label="Actions for Atlas Research" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                      <div id="menu-atlas" role="menu" data-record-id="atlas" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                        <button type="button" role="menuitem" data-action="configure" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Configure</button>
-                        <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                      <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-atlas" aria-label="Actions for Atlas Research" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                      <div id="menu-atlas" role="menu" data-record-id="atlas" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                        <button type="button" role="menuitem" data-action="configure" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">Configure</button>
+                        <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div data-collapsible>
-                  <button type="button" data-collapse-trigger aria-expanded="false" aria-controls="skills-atlas" class="mt-4 flex w-full items-center justify-between rounded-lg px-1 py-1 text-sm font-medium text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-200 dark:hover:bg-slate-800">
-                    <span>Skills <span class="font-normal text-slate-500 dark:text-slate-400">3</span></span>
+                  <button type="button" data-collapse-trigger aria-expanded="false" aria-controls="skills-atlas" class="mt-4 flex w-full items-center justify-between rounded-lg px-1 py-1 text-sm font-medium text-ink hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-ink-dark dark:hover:bg-subtle-dark">
+                    <span>Skills <span class="font-normal text-muted dark:text-muted-dark">3</span></span>
                     <svg data-chevron class="h-4 w-4 transition-transform duration-300 motion-reduce:transition-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
                   </button>
                   <div id="skills-atlas" data-collapse-panel class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out motion-reduce:transition-none">
                     <div class="overflow-hidden">
                       <ul class="flex flex-wrap gap-2 pt-3">
-                        <li class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Web Browse</li>
-                        <li class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Document Read</li>
-                        <li class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Calendar</li>
+                        <li class="rounded-full bg-subtle px-2.5 py-1 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Web Browse</li>
+                        <li class="rounded-full bg-subtle px-2.5 py-1 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Document Read</li>
+                        <li class="rounded-full bg-subtle px-2.5 py-1 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Calendar</li>
                       </ul>
                     </div>
                   </div>
                 </div>
               </article>
 
-              <article data-record data-id="ledger" data-name="Ledger Clerk" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article data-record data-id="ledger" data-name="Ledger Clerk" class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
                   <div>
-                    <h3 class="text-base font-semibold">Ledger Clerk</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400">Marcus Chen · Lumen Labs</p>
+                    <h3 class="text-base font-bold">Ledger Clerk</h3>
+                    <p class="text-sm text-muted dark:text-muted-dark">Marcus Chen · Lumen Labs</p>
                   </div>
                   <div class="flex items-center gap-2">
-                    <span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Active</span>
+                    <span class="inline-flex items-center rounded-full bg-success px-2 py-0.5 text-xs font-medium text-on-status">Active</span>
                     <div class="relative" data-dropdown>
-                      <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-ledger" aria-label="Actions for Ledger Clerk" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                      <div id="menu-ledger" role="menu" data-record-id="ledger" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                        <button type="button" role="menuitem" data-action="configure" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Configure</button>
-                        <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                      <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-ledger" aria-label="Actions for Ledger Clerk" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                      <div id="menu-ledger" role="menu" data-record-id="ledger" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                        <button type="button" role="menuitem" data-action="configure" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">Configure</button>
+                        <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div data-collapsible>
-                  <button type="button" data-collapse-trigger aria-expanded="false" aria-controls="skills-ledger" class="mt-4 flex w-full items-center justify-between rounded-lg px-1 py-1 text-sm font-medium text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-200 dark:hover:bg-slate-800">
-                    <span>Skills <span class="font-normal text-slate-500 dark:text-slate-400">2</span></span>
+                  <button type="button" data-collapse-trigger aria-expanded="false" aria-controls="skills-ledger" class="mt-4 flex w-full items-center justify-between rounded-lg px-1 py-1 text-sm font-medium text-ink hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-ink-dark dark:hover:bg-subtle-dark">
+                    <span>Skills <span class="font-normal text-muted dark:text-muted-dark">2</span></span>
                     <svg data-chevron class="h-4 w-4 transition-transform duration-300 motion-reduce:transition-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
                   </button>
                   <div id="skills-ledger" data-collapse-panel class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out motion-reduce:transition-none">
                     <div class="overflow-hidden">
                       <ul class="flex flex-wrap gap-2 pt-3">
-                        <li class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Document Read</li>
-                        <li class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Spreadsheet</li>
+                        <li class="rounded-full bg-subtle px-2.5 py-1 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Document Read</li>
+                        <li class="rounded-full bg-subtle px-2.5 py-1 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Spreadsheet</li>
                       </ul>
                     </div>
                   </div>
                 </div>
               </article>
 
-              <article data-record data-id="inbox" data-name="Inbox Triage" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article data-record data-id="inbox" data-name="Inbox Triage" class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
                   <div>
-                    <h3 class="text-base font-semibold">Inbox Triage</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400">Priya Shah · Orbit Mail</p>
+                    <h3 class="text-base font-bold">Inbox Triage</h3>
+                    <p class="text-sm text-muted dark:text-muted-dark">Priya Shah · Orbit Mail</p>
                   </div>
                   <div class="flex items-center gap-2">
-                    <span class="inline-flex items-center rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-800 dark:bg-rose-950 dark:text-rose-200">Failing</span>
+                    <span class="inline-flex items-center rounded-full bg-danger px-2 py-0.5 text-xs font-medium text-on-status">Failing</span>
                     <div class="relative" data-dropdown>
-                      <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-inbox" aria-label="Actions for Inbox Triage" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                      <div id="menu-inbox" role="menu" data-record-id="inbox" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                        <button type="button" role="menuitem" data-action="configure" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Configure</button>
-                        <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                      <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-inbox" aria-label="Actions for Inbox Triage" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                      <div id="menu-inbox" role="menu" data-record-id="inbox" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                        <button type="button" role="menuitem" data-action="configure" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">Configure</button>
+                        <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div data-collapsible>
-                  <button type="button" data-collapse-trigger aria-expanded="false" aria-controls="skills-inbox" class="mt-4 flex w-full items-center justify-between rounded-lg px-1 py-1 text-sm font-medium text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-200 dark:hover:bg-slate-800">
-                    <span>Skills <span class="font-normal text-slate-500 dark:text-slate-400">2</span></span>
+                  <button type="button" data-collapse-trigger aria-expanded="false" aria-controls="skills-inbox" class="mt-4 flex w-full items-center justify-between rounded-lg px-1 py-1 text-sm font-medium text-ink hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-ink-dark dark:hover:bg-subtle-dark">
+                    <span>Skills <span class="font-normal text-muted dark:text-muted-dark">2</span></span>
                     <svg data-chevron class="h-4 w-4 transition-transform duration-300 motion-reduce:transition-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
                   </button>
                   <div id="skills-inbox" data-collapse-panel class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out motion-reduce:transition-none">
                     <div class="overflow-hidden">
                       <ul class="flex flex-wrap gap-2 pt-3">
-                        <li class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Email Draft</li>
-                        <li class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Web Browse</li>
+                        <li class="rounded-full bg-subtle px-2.5 py-1 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Email Draft</li>
+                        <li class="rounded-full bg-subtle px-2.5 py-1 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Web Browse</li>
                       </ul>
                     </div>
                   </div>
                 </div>
               </article>
 
-              <article data-record data-id="field" data-name="Field Notes" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article data-record data-id="field" data-name="Field Notes" class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
                   <div>
-                    <h3 class="text-base font-semibold">Field Notes</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400">Jonah Adler · Fieldnote</p>
+                    <h3 class="text-base font-bold">Field Notes</h3>
+                    <p class="text-sm text-muted dark:text-muted-dark">Jonah Adler · Fieldnote</p>
                   </div>
                   <div class="flex items-center gap-2">
-                    <span class="inline-flex items-center rounded-full bg-slate-200 px-2 py-0.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Inactive</span>
+                    <span class="inline-flex items-center rounded-full bg-subtle px-2 py-0.5 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Inactive</span>
                     <div class="relative" data-dropdown>
-                      <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-field" aria-label="Actions for Field Notes" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                      <div id="menu-field" role="menu" data-record-id="field" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                        <button type="button" role="menuitem" data-action="configure" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Configure</button>
-                        <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                      <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-field" aria-label="Actions for Field Notes" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                      <div id="menu-field" role="menu" data-record-id="field" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                        <button type="button" role="menuitem" data-action="configure" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">Configure</button>
+                        <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div data-collapsible>
-                  <button type="button" data-collapse-trigger aria-expanded="false" aria-controls="skills-field" class="mt-4 flex w-full items-center justify-between rounded-lg px-1 py-1 text-sm font-medium text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-200 dark:hover:bg-slate-800">
-                    <span>Skills <span class="font-normal text-slate-500 dark:text-slate-400">2</span></span>
+                  <button type="button" data-collapse-trigger aria-expanded="false" aria-controls="skills-field" class="mt-4 flex w-full items-center justify-between rounded-lg px-1 py-1 text-sm font-medium text-ink hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-ink-dark dark:hover:bg-subtle-dark">
+                    <span>Skills <span class="font-normal text-muted dark:text-muted-dark">2</span></span>
                     <svg data-chevron class="h-4 w-4 transition-transform duration-300 motion-reduce:transition-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
                   </button>
                   <div id="skills-field" data-collapse-panel class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out motion-reduce:transition-none">
                     <div class="overflow-hidden">
                       <ul class="flex flex-wrap gap-2 pt-3">
-                        <li class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Document Read</li>
-                        <li class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Calendar</li>
+                        <li class="rounded-full bg-subtle px-2.5 py-1 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Document Read</li>
+                        <li class="rounded-full bg-subtle px-2.5 py-1 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Calendar</li>
                       </ul>
                     </div>
                   </div>
                 </div>
               </article>
 
-              <article data-record data-id="compliance" data-name="Compliance Watch" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article data-record data-id="compliance" data-name="Compliance Watch" class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
                   <div>
-                    <h3 class="text-base font-semibold">Compliance Watch</h3>
-                    <p class="text-sm text-slate-500 dark:text-slate-400">Amira Hassan · Cedar Ops</p>
+                    <h3 class="text-base font-bold">Compliance Watch</h3>
+                    <p class="text-sm text-muted dark:text-muted-dark">Amira Hassan · Cedar Ops</p>
                   </div>
                   <div class="flex items-center gap-2">
-                    <span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Active</span>
+                    <span class="inline-flex items-center rounded-full bg-success px-2 py-0.5 text-xs font-medium text-on-status">Active</span>
                     <div class="relative" data-dropdown>
-                      <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-compliance" aria-label="Actions for Compliance Watch" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                      <div id="menu-compliance" role="menu" data-record-id="compliance" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                        <button type="button" role="menuitem" data-action="configure" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">Configure</button>
-                        <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                      <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-compliance" aria-label="Actions for Compliance Watch" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                      <div id="menu-compliance" role="menu" data-record-id="compliance" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                        <button type="button" role="menuitem" data-action="configure" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">Configure</button>
+                        <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div data-collapsible>
-                  <button type="button" data-collapse-trigger aria-expanded="false" aria-controls="skills-compliance" class="mt-4 flex w-full items-center justify-between rounded-lg px-1 py-1 text-sm font-medium text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-200 dark:hover:bg-slate-800">
-                    <span>Skills <span class="font-normal text-slate-500 dark:text-slate-400">3</span></span>
+                  <button type="button" data-collapse-trigger aria-expanded="false" aria-controls="skills-compliance" class="mt-4 flex w-full items-center justify-between rounded-lg px-1 py-1 text-sm font-medium text-ink hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-ink-dark dark:hover:bg-subtle-dark">
+                    <span>Skills <span class="font-normal text-muted dark:text-muted-dark">3</span></span>
                     <svg data-chevron class="h-4 w-4 transition-transform duration-300 motion-reduce:transition-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
                   </button>
                   <div id="skills-compliance" data-collapse-panel class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out motion-reduce:transition-none">
                     <div class="overflow-hidden">
                       <ul class="flex flex-wrap gap-2 pt-3">
-                        <li class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Web Browse</li>
-                        <li class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Document Read</li>
-                        <li class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Policy Check</li>
+                        <li class="rounded-full bg-subtle px-2.5 py-1 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Web Browse</li>
+                        <li class="rounded-full bg-subtle px-2.5 py-1 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Document Read</li>
+                        <li class="rounded-full bg-subtle px-2.5 py-1 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Policy Check</li>
                       </ul>
                     </div>
                   </div>
@@ -455,107 +494,107 @@
           </section>
 
           <section id="skills" hidden aria-labelledby="skills-heading" class="mx-auto max-w-6xl">
-            <h2 id="skills-heading" tabindex="-1" class="text-2xl font-semibold tracking-tight focus:outline-none">Skills</h2>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Capabilities that can be attached to an agent.</p>
-            <aside class="mt-6 rounded-xl border border-indigo-200 bg-indigo-50 p-4 dark:border-indigo-900 dark:bg-indigo-950/40">
-              <h3 class="text-sm font-semibold text-indigo-950 dark:text-indigo-100">What is a skill?</h3>
-              <p class="mt-1 text-sm text-indigo-900 dark:text-indigo-200">A skill is a capability that can be attached to an agent — for example browsing the web, reading documents, or managing a calendar. A skill does not run by itself. It becomes available only when an agent has it enabled and a contract includes it.</p>
+            <h2 id="skills-heading" tabindex="-1" class="text-2xl font-bold tracking-tight focus:outline-none">Skills</h2>
+            <p class="mt-1 text-sm text-muted dark:text-muted-dark">Capabilities that can be attached to an agent.</p>
+            <aside class="mt-6 rounded-xl border border-border bg-selected p-4 dark:border-border-dark dark:bg-subtle-dark">
+              <h3 class="text-sm font-bold text-ink dark:text-ink-dark">What is a skill?</h3>
+              <p class="mt-1 text-sm text-ink dark:text-ink-dark">A skill is a capability that can be attached to an agent — for example browsing the web, reading documents, or managing a calendar. A skill does not run by itself. It becomes available only when an agent has it enabled and a contract includes it.</p>
             </aside>
             <div class="mt-6 grid gap-4 md:grid-cols-2">
-              <article data-record data-id="skill-browse" data-name="Web Browse" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article data-record data-id="skill-browse" data-name="Web Browse" class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
-                  <h3 class="text-base font-semibold">Web Browse</h3>
+                  <h3 class="text-base font-bold">Web Browse</h3>
                   <div class="relative" data-dropdown>
-                    <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-skill-browse" aria-label="Actions for Web Browse" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                    <div id="menu-skill-browse" role="menu" data-record-id="skill-browse" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                      <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                      <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                    <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-skill-browse" aria-label="Actions for Web Browse" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                    <div id="menu-skill-browse" role="menu" data-record-id="skill-browse" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                      <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                      <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                     </div>
                   </div>
                 </div>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Opens public web pages and extracts visible text. It cannot log in or submit forms.</p>
+                <p class="mt-2 text-sm text-muted dark:text-muted-dark">Opens public web pages and extracts visible text. It cannot log in or submit forms.</p>
                 <p class="mt-3 text-sm font-medium">Enabled on 3 agents</p>
               </article>
-              <article data-record data-id="skill-docs" data-name="Document Read" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article data-record data-id="skill-docs" data-name="Document Read" class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
-                  <h3 class="text-base font-semibold">Document Read</h3>
+                  <h3 class="text-base font-bold">Document Read</h3>
                   <div class="relative" data-dropdown>
-                    <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-skill-docs" aria-label="Actions for Document Read" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                    <div id="menu-skill-docs" role="menu" data-record-id="skill-docs" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                      <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                      <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                    <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-skill-docs" aria-label="Actions for Document Read" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                    <div id="menu-skill-docs" role="menu" data-record-id="skill-docs" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                      <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                      <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                     </div>
                   </div>
                 </div>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Reads PDF and text documents supplied by the client and quotes passages with page numbers.</p>
+                <p class="mt-2 text-sm text-muted dark:text-muted-dark">Reads PDF and text documents supplied by the client and quotes passages with page numbers.</p>
                 <p class="mt-3 text-sm font-medium">Enabled on 4 agents</p>
               </article>
-              <article data-record data-id="skill-calendar" data-name="Calendar" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article data-record data-id="skill-calendar" data-name="Calendar" class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
-                  <h3 class="text-base font-semibold">Calendar</h3>
+                  <h3 class="text-base font-bold">Calendar</h3>
                   <div class="relative" data-dropdown>
-                    <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-skill-calendar" aria-label="Actions for Calendar" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                    <div id="menu-skill-calendar" role="menu" data-record-id="skill-calendar" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                      <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                      <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                    <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-skill-calendar" aria-label="Actions for Calendar" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                    <div id="menu-skill-calendar" role="menu" data-record-id="skill-calendar" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                      <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                      <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                     </div>
                   </div>
                 </div>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Reads busy time and proposes events. It cannot invite attendees.</p>
+                <p class="mt-2 text-sm text-muted dark:text-muted-dark">Reads busy time and proposes events. It cannot invite attendees.</p>
                 <p class="mt-3 text-sm font-medium">Enabled on 2 agents</p>
               </article>
-              <article data-record data-id="skill-email" data-name="Email Draft" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article data-record data-id="skill-email" data-name="Email Draft" class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
-                  <h3 class="text-base font-semibold">Email Draft</h3>
+                  <h3 class="text-base font-bold">Email Draft</h3>
                   <div class="relative" data-dropdown>
-                    <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-skill-email" aria-label="Actions for Email Draft" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                    <div id="menu-skill-email" role="menu" data-record-id="skill-email" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                      <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                      <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                    <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-skill-email" aria-label="Actions for Email Draft" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                    <div id="menu-skill-email" role="menu" data-record-id="skill-email" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                      <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                      <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                     </div>
                   </div>
                 </div>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Drafts email text. Sending stays with the client.</p>
+                <p class="mt-2 text-sm text-muted dark:text-muted-dark">Drafts email text. Sending stays with the client.</p>
                 <p class="mt-3 text-sm font-medium">Enabled on 1 agent</p>
               </article>
-              <article data-record data-id="skill-sheet" data-name="Spreadsheet" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article data-record data-id="skill-sheet" data-name="Spreadsheet" class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
-                  <h3 class="text-base font-semibold">Spreadsheet</h3>
+                  <h3 class="text-base font-bold">Spreadsheet</h3>
                   <div class="relative" data-dropdown>
-                    <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-skill-sheet" aria-label="Actions for Spreadsheet" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                    <div id="menu-skill-sheet" role="menu" data-record-id="skill-sheet" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                      <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                      <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                    <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-skill-sheet" aria-label="Actions for Spreadsheet" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                    <div id="menu-skill-sheet" role="menu" data-record-id="skill-sheet" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                      <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                      <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                     </div>
                   </div>
                 </div>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Reads tabular files and computes sums, averages, and mismatches.</p>
+                <p class="mt-2 text-sm text-muted dark:text-muted-dark">Reads tabular files and computes sums, averages, and mismatches.</p>
                 <p class="mt-3 text-sm font-medium">Enabled on 1 agent</p>
               </article>
-              <article data-record data-id="skill-policy" data-name="Policy Check" class="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+              <article data-record data-id="skill-policy" data-name="Policy Check" class="rounded-xl border border-border bg-surface p-4 shadow-sm dark:border-border-dark dark:bg-surface-dark">
                 <div class="flex items-start justify-between gap-3">
-                  <h3 class="text-base font-semibold">Policy Check</h3>
+                  <h3 class="text-base font-bold">Policy Check</h3>
                   <div class="relative" data-dropdown>
-                    <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-skill-policy" aria-label="Actions for Policy Check" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                    <div id="menu-skill-policy" role="menu" data-record-id="skill-policy" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                      <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                      <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                    <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-skill-policy" aria-label="Actions for Policy Check" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                    <div id="menu-skill-policy" role="menu" data-record-id="skill-policy" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                      <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                      <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                     </div>
                   </div>
                 </div>
-                <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Scores a document against a fixed checklist and returns pass or fail per item.</p>
+                <p class="mt-2 text-sm text-muted dark:text-muted-dark">Scores a document against a fixed checklist and returns pass or fail per item.</p>
                 <p class="mt-3 text-sm font-medium">Enabled on 1 agent</p>
               </article>
             </div>
           </section>
 
           <section id="contracts" hidden aria-labelledby="contracts-heading" class="mx-auto max-w-6xl">
-            <h2 id="contracts-heading" tabindex="-1" class="text-2xl font-semibold tracking-tight focus:outline-none">Agent Contracts</h2>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Active and past rentals. Amount paid is the monthly fee times the months billed.</p>
-            <div class="mt-6 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <h2 id="contracts-heading" tabindex="-1" class="text-2xl font-bold tracking-tight focus:outline-none">Agent Contracts</h2>
+            <p class="mt-1 text-sm text-muted dark:text-muted-dark">Active and past rentals. Amount paid is the monthly fee times the months billed.</p>
+            <div class="mt-6 overflow-x-auto rounded-xl border border-border bg-surface shadow-sm dark:border-border-dark dark:bg-surface-dark">
               <table class="min-w-full text-left text-sm">
                 <caption class="sr-only">Agent rental contracts</caption>
-                <thead class="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400">
+                <thead class="border-b border-border text-xs uppercase tracking-wide text-muted dark:border-border-dark dark:text-muted-dark">
                   <tr>
                     <th scope="col" class="px-4 py-3 font-medium">Client</th>
                     <th scope="col" class="px-4 py-3 font-medium">Agent</th>
@@ -567,93 +606,93 @@
                     <th scope="col" class="px-4 py-3 text-right font-medium">Actions</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
-                  <tr data-record data-id="CTR-1042" data-name="CTR-1042" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                <tbody class="divide-y divide-border dark:divide-border-dark">
+                  <tr data-record data-id="CTR-1042" data-name="CTR-1042" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="px-4 py-3 font-medium">Northwind Analytics</td>
                     <td class="px-4 py-3">Atlas Research</td>
                     <td class="px-4 py-3">Web Browse, Document Read, Calendar</td>
                     <td class="whitespace-nowrap px-4 py-3">2026-09-01</td>
                     <td class="whitespace-nowrap px-4 py-3">2026-11-30</td>
                     <td class="whitespace-nowrap px-4 py-3">$4,800</td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Active</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-success px-2 py-0.5 text-xs font-medium text-on-status">Active</span></td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-CTR-1042" aria-label="Actions for CTR-1042" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-CTR-1042" role="menu" data-record-id="CTR-1042" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-CTR-1042" aria-label="Actions for CTR-1042" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-CTR-1042" role="menu" data-record-id="CTR-1042" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="CTR-1048" data-name="CTR-1048" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="CTR-1048" data-name="CTR-1048" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="px-4 py-3 font-medium">Lumen Labs</td>
                     <td class="px-4 py-3">Ledger Clerk</td>
                     <td class="px-4 py-3">Document Read, Spreadsheet</td>
                     <td class="whitespace-nowrap px-4 py-3">2026-08-01</td>
                     <td class="whitespace-nowrap px-4 py-3">2026-11-30</td>
                     <td class="whitespace-nowrap px-4 py-3">$6,000</td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Active</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-success px-2 py-0.5 text-xs font-medium text-on-status">Active</span></td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-CTR-1048" aria-label="Actions for CTR-1048" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-CTR-1048" role="menu" data-record-id="CTR-1048" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-CTR-1048" aria-label="Actions for CTR-1048" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-CTR-1048" role="menu" data-record-id="CTR-1048" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="CTR-0988" data-name="CTR-0988" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="CTR-0988" data-name="CTR-0988" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="px-4 py-3 font-medium">Orbit Mail</td>
                     <td class="px-4 py-3">Inbox Triage</td>
                     <td class="px-4 py-3">Email Draft, Web Browse</td>
                     <td class="whitespace-nowrap px-4 py-3">2026-10-01</td>
                     <td class="whitespace-nowrap px-4 py-3">2026-10-31</td>
                     <td class="whitespace-nowrap px-4 py-3">$1,100</td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-slate-200 px-2 py-0.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Ended</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-subtle px-2 py-0.5 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Ended</span></td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-CTR-0988" aria-label="Actions for CTR-0988" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-CTR-0988" role="menu" data-record-id="CTR-0988" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-CTR-0988" aria-label="Actions for CTR-0988" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-CTR-0988" role="menu" data-record-id="CTR-0988" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="CTR-1102" data-name="CTR-1102" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="CTR-1102" data-name="CTR-1102" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="px-4 py-3 font-medium">Cedar Ops</td>
                     <td class="px-4 py-3">Compliance Watch</td>
                     <td class="px-4 py-3">Web Browse, Document Read, Policy Check</td>
                     <td class="whitespace-nowrap px-4 py-3">2026-07-01</td>
                     <td class="whitespace-nowrap px-4 py-3">2027-01-31</td>
                     <td class="whitespace-nowrap px-4 py-3">$10,500</td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">Active</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-success px-2 py-0.5 text-xs font-medium text-on-status">Active</span></td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-CTR-1102" aria-label="Actions for CTR-1102" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-CTR-1102" role="menu" data-record-id="CTR-1102" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-CTR-1102" aria-label="Actions for CTR-1102" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-CTR-1102" role="menu" data-record-id="CTR-1102" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="CTR-0904" data-name="CTR-0904" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="CTR-0904" data-name="CTR-0904" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="px-4 py-3 font-medium">Fieldnote</td>
                     <td class="px-4 py-3">Field Notes</td>
                     <td class="px-4 py-3">Document Read, Calendar</td>
                     <td class="whitespace-nowrap px-4 py-3">2026-06-01</td>
                     <td class="whitespace-nowrap px-4 py-3">2026-08-31</td>
                     <td class="whitespace-nowrap px-4 py-3">$2,100</td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-slate-200 px-2 py-0.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Ended</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center rounded-full bg-subtle px-2 py-0.5 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Ended</span></td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-CTR-0904" aria-label="Actions for CTR-0904" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-CTR-0904" role="menu" data-record-id="CTR-0904" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-rose-700 hover:bg-rose-50 dark:text-rose-300 dark:hover:bg-rose-950/40">Delete</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-CTR-0904" aria-label="Actions for CTR-0904" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-CTR-0904" role="menu" data-record-id="CTR-0904" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="delete" class="block w-full px-3 py-2 text-left text-sm text-danger hover:bg-selected dark:bg-danger dark:text-on-status dark:hover:bg-action-pressed">Delete</button>
                         </div>
                       </div>
                     </td>
@@ -664,12 +703,12 @@
           </section>
 
           <section id="errors" hidden aria-labelledby="errors-heading" class="mx-auto max-w-6xl">
-            <h2 id="errors-heading" tabindex="-1" class="text-2xl font-semibold tracking-tight focus:outline-none">Error Log</h2>
-            <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Execution errors from rented agents. Badge color follows the error type.</p>
-            <div class="mt-6 overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <h2 id="errors-heading" tabindex="-1" class="text-2xl font-bold tracking-tight focus:outline-none">Error Log</h2>
+            <p class="mt-1 text-sm text-muted dark:text-muted-dark">Execution errors from rented agents. Badge color follows the error type.</p>
+            <div class="mt-6 overflow-x-auto rounded-xl border border-border bg-surface shadow-sm dark:border-border-dark dark:bg-surface-dark">
               <table class="min-w-full text-left text-sm">
                 <caption class="sr-only">Agent execution errors</caption>
-                <thead class="border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:text-slate-400">
+                <thead class="border-b border-border text-xs uppercase tracking-wide text-muted dark:border-border-dark dark:text-muted-dark">
                   <tr>
                     <th scope="col" class="px-4 py-3 font-medium">Timestamp</th>
                     <th scope="col" class="px-4 py-3 font-medium">Agent</th>
@@ -678,108 +717,108 @@
                     <th scope="col" class="px-4 py-3 text-right font-medium">Actions</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-200 dark:divide-slate-800">
-                  <tr data-record data-id="err-1" data-name="Inbox Triage · Timeout" data-agent="Inbox Triage" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                <tbody class="divide-y divide-border dark:divide-border-dark">
+                  <tr data-record data-id="err-1" data-name="Inbox Triage · Timeout" data-agent="Inbox Triage" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="whitespace-nowrap px-4 py-3">2026-11-05 14:22 UTC</td>
                     <td class="px-4 py-3 font-medium">Inbox Triage</td>
-                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-800 dark:bg-rose-950 dark:text-rose-200">Timeout</span></td>
+                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-danger px-2 py-0.5 text-xs font-medium text-on-status">Timeout</span></td>
                     <td class="px-4 py-3">Web Browse exceeded 30s on status.orbitmail.co.</td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-1" aria-label="Actions for Inbox Triage · Timeout" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-err-1" role="menu" data-record-id="err-1" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:text-slate-400 dark:text-slate-200 dark:hover:bg-slate-800 dark:disabled:text-slate-500">Mark as resolved</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-1" aria-label="Actions for Inbox Triage · Timeout" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-err-1" role="menu" data-record-id="err-1" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle disabled:cursor-not-allowed disabled:text-muted dark:text-ink-dark dark:hover:bg-subtle-dark dark:disabled:text-muted-dark">Mark as resolved</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="err-2" data-name="Inbox Triage · Authentication" data-agent="Inbox Triage" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="err-2" data-name="Inbox Triage · Authentication" data-agent="Inbox Triage" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="whitespace-nowrap px-4 py-3">2026-11-05 09:03 UTC</td>
                     <td class="px-4 py-3 font-medium">Inbox Triage</td>
-                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-200">Authentication</span></td>
+                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-warning px-2 py-0.5 text-xs font-medium text-on-status">Authentication</span></td>
                     <td class="px-4 py-3">Email Draft token was rejected by the client mailbox.</td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-2" aria-label="Actions for Inbox Triage · Authentication" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-err-2" role="menu" data-record-id="err-2" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:text-slate-400 dark:text-slate-200 dark:hover:bg-slate-800 dark:disabled:text-slate-500">Mark as resolved</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-2" aria-label="Actions for Inbox Triage · Authentication" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-err-2" role="menu" data-record-id="err-2" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle disabled:cursor-not-allowed disabled:text-muted dark:text-ink-dark dark:hover:bg-subtle-dark dark:disabled:text-muted-dark">Mark as resolved</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="err-3" data-name="Atlas Research · Rate limit" data-agent="Atlas Research" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="err-3" data-name="Atlas Research · Rate limit" data-agent="Atlas Research" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="whitespace-nowrap px-4 py-3">2026-11-04 18:47 UTC</td>
                     <td class="px-4 py-3 font-medium">Atlas Research</td>
-                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-950 dark:text-yellow-200">Rate limit</span></td>
+                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-warning px-2 py-0.5 text-xs font-medium text-on-status">Rate limit</span></td>
                     <td class="px-4 py-3">Web Browse hit 60 requests/hour for Northwind public docs.</td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-3" aria-label="Actions for Atlas Research · Rate limit" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-err-3" role="menu" data-record-id="err-3" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:text-slate-400 dark:text-slate-200 dark:hover:bg-slate-800 dark:disabled:text-slate-500">Mark as resolved</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-3" aria-label="Actions for Atlas Research · Rate limit" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-err-3" role="menu" data-record-id="err-3" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle disabled:cursor-not-allowed disabled:text-muted dark:text-ink-dark dark:hover:bg-subtle-dark dark:disabled:text-muted-dark">Mark as resolved</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="err-4" data-name="Ledger Clerk · Parse error" data-agent="Ledger Clerk" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="err-4" data-name="Ledger Clerk · Parse error" data-agent="Ledger Clerk" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="whitespace-nowrap px-4 py-3">2026-11-04 11:16 UTC</td>
                     <td class="px-4 py-3 font-medium">Ledger Clerk</td>
-                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-violet-100 px-2 py-0.5 text-xs font-medium text-violet-800 dark:bg-violet-950 dark:text-violet-200">Parse error</span></td>
+                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-info px-2 py-0.5 text-xs font-medium text-on-status">Parse error</span></td>
                     <td class="px-4 py-3">Spreadsheet skill could not read sheet Q4-accruals.</td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-4" aria-label="Actions for Ledger Clerk · Parse error" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-err-4" role="menu" data-record-id="err-4" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:text-slate-400 dark:text-slate-200 dark:hover:bg-slate-800 dark:disabled:text-slate-500">Mark as resolved</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-4" aria-label="Actions for Ledger Clerk · Parse error" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-err-4" role="menu" data-record-id="err-4" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle disabled:cursor-not-allowed disabled:text-muted dark:text-ink-dark dark:hover:bg-subtle-dark dark:disabled:text-muted-dark">Mark as resolved</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="err-5" data-name="Compliance Watch · Tool failure" data-agent="Compliance Watch" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="err-5" data-name="Compliance Watch · Tool failure" data-agent="Compliance Watch" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="whitespace-nowrap px-4 py-3">2026-11-03 16:02 UTC</td>
                     <td class="px-4 py-3 font-medium">Compliance Watch</td>
-                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-800 dark:bg-rose-950 dark:text-rose-200">Tool failure</span></td>
+                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-danger px-2 py-0.5 text-xs font-medium text-on-status">Tool failure</span></td>
                     <td class="px-4 py-3">Policy Check returned an empty checklist.</td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-5" aria-label="Actions for Compliance Watch · Tool failure" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-err-5" role="menu" data-record-id="err-5" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:text-slate-400 dark:text-slate-200 dark:hover:bg-slate-800 dark:disabled:text-slate-500">Mark as resolved</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-5" aria-label="Actions for Compliance Watch · Tool failure" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-err-5" role="menu" data-record-id="err-5" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle disabled:cursor-not-allowed disabled:text-muted dark:text-ink-dark dark:hover:bg-subtle-dark dark:disabled:text-muted-dark">Mark as resolved</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="err-6" data-name="Field Notes · Configuration" data-agent="Field Notes" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="err-6" data-name="Field Notes · Configuration" data-agent="Field Notes" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="whitespace-nowrap px-4 py-3">2026-11-02 08:28 UTC</td>
                     <td class="px-4 py-3 font-medium">Field Notes</td>
-                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-slate-200 px-2 py-0.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">Configuration</span></td>
+                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-subtle px-2 py-0.5 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark">Configuration</span></td>
                     <td class="px-4 py-3">Calendar skill is disabled because the agent is inactive.</td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-6" aria-label="Actions for Field Notes · Configuration" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-err-6" role="menu" data-record-id="err-6" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:text-slate-400 dark:text-slate-200 dark:hover:bg-slate-800 dark:disabled:text-slate-500">Mark as resolved</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-6" aria-label="Actions for Field Notes · Configuration" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-err-6" role="menu" data-record-id="err-6" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle disabled:cursor-not-allowed disabled:text-muted dark:text-ink-dark dark:hover:bg-subtle-dark dark:disabled:text-muted-dark">Mark as resolved</button>
                         </div>
                       </div>
                     </td>
                   </tr>
-                  <tr data-record data-id="err-7" data-name="Inbox Triage · Empty response" data-agent="Inbox Triage" class="hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                  <tr data-record data-id="err-7" data-name="Inbox Triage · Empty response" data-agent="Inbox Triage" class="hover:bg-subtle dark:hover:bg-subtle-dark">
                     <td class="whitespace-nowrap px-4 py-3">2026-11-01 19:40 UTC</td>
                     <td class="px-4 py-3 font-medium">Inbox Triage</td>
-                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-800 dark:bg-orange-950 dark:text-orange-200">Empty response</span></td>
+                    <td class="px-4 py-3"><span data-error-badge class="inline-flex items-center rounded-full bg-warning px-2 py-0.5 text-xs font-medium text-on-status">Empty response</span></td>
                     <td class="px-4 py-3">Email Draft returned no body for thread ORB-441.</td>
                     <td class="px-4 py-3 text-right">
                       <div class="relative inline-block" data-dropdown>
-                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-7" aria-label="Actions for Inbox Triage · Empty response" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100">⋮</button>
-                        <div id="menu-err-7" role="menu" data-record-id="err-7" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800">View detail</button>
-                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:text-slate-400 dark:text-slate-200 dark:hover:bg-slate-800 dark:disabled:text-slate-500">Mark as resolved</button>
+                        <button type="button" data-dropdown-trigger aria-haspopup="menu" aria-expanded="false" aria-controls="menu-err-7" aria-label="Actions for Inbox Triage · Empty response" class="inline-flex h-8 w-8 items-center justify-center rounded-lg text-base text-muted hover:bg-subtle hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:text-muted-dark dark:hover:bg-subtle-dark dark:hover:text-ink-dark">⋮</button>
+                        <div id="menu-err-7" role="menu" data-record-id="err-7" hidden class="absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark">
+                          <button type="button" role="menuitem" data-action="view" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle dark:text-ink-dark dark:hover:bg-subtle-dark">View detail</button>
+                          <button type="button" role="menuitem" data-action="resolve" class="block w-full px-3 py-2 text-left text-sm text-ink hover:bg-subtle disabled:cursor-not-allowed disabled:text-muted dark:text-ink-dark dark:hover:bg-subtle-dark dark:disabled:text-muted-dark">Mark as resolved</button>
                         </div>
                       </div>
                     </td>
@@ -789,23 +828,30 @@
             </div>
           </section>
         </main>
+        <footer class="border-t border-border bg-surface px-4 py-6">
+          <div class="mx-auto flex max-w-6xl flex-col items-start gap-3">
+            <p class="text-xs text-muted">Academic credit. Not an official partnership.</p>
+            <img src="brand/lockups/signal-stacked.svg" width="280" height="140" alt="4Geeks por Divinivid" class="block h-auto w-[280px] shrink-0 md:hidden" />
+            <img src="brand/lockups/signal-horizontal.svg" width="400" height="64" alt="4Geeks por Divinivid" class="hidden h-auto w-[400px] shrink-0 md:block" />
+          </div>
+        </footer>
       </div>
     </div>
 
-    <div id="modal-root" hidden class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4">
+    <div id="modal-root" hidden class="fixed inset-0 z-50 hidden items-center justify-center bg-overlay p-4">
       <div
         id="modal-panel"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        class="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+        class="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-border bg-surface p-5 shadow-sm dark:border-border-dark dark:bg-surface-dark"
       >
         <div class="flex items-start justify-between gap-4">
-          <h2 id="modal-title" class="text-lg font-semibold"></h2>
+          <h2 id="modal-title" class="text-lg font-bold"></h2>
           <button
             type="button"
             data-modal-close
-            class="shrink-0 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-800"
+            class="shrink-0 rounded-lg border border-border px-3 py-1.5 text-sm font-medium text-ink hover:bg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:border-border-dark dark:text-ink-dark dark:hover:bg-subtle-dark"
           >
             Close
           </button>
@@ -825,16 +871,16 @@
           contracts: "Agent Contracts",
           errors: "Error Log"
         };
-        var NAV_ACTIVE = "flex items-center gap-2 rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400";
-        var NAV_IDLE = "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400";
-        var MENU_REST = "absolute right-0 z-30 mt-1 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900";
-        var MENU_VISUAL = "fixed z-50 w-44 rounded-xl border border-slate-200 bg-white py-1 shadow-sm dark:border-slate-700 dark:bg-slate-900";
-        var EMERALD_BADGE = "inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200";
+        var NAV_ACTIVE = "flex items-center gap-2 rounded-lg bg-action px-3 py-2 text-sm font-medium text-on-action focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canvas focus-visible:ring-offset-2 focus-visible:ring-offset-ink dark:focus-visible:ring-offset-sidebar-dark";
+        var NAV_IDLE = "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-canvas hover:bg-canvas/10 hover:text-canvas focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-canvas focus-visible:ring-offset-2 focus-visible:ring-offset-ink dark:focus-visible:ring-offset-sidebar-dark";
+        var MENU_REST = "absolute right-0 z-30 mt-1 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark";
+        var MENU_VISUAL = "fixed z-50 w-44 rounded-xl border border-border bg-surface py-1 shadow-sm dark:border-border-dark dark:bg-surface-dark";
+        var EMERALD_BADGE = "inline-flex items-center rounded-full bg-success px-2 py-0.5 text-xs font-medium text-on-status";
         var BADGES = {
           emerald: EMERALD_BADGE,
-          amber: "inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-950 dark:text-amber-200",
-          rose: "inline-flex items-center rounded-full bg-rose-100 px-2 py-0.5 text-xs font-medium text-rose-800 dark:bg-rose-950 dark:text-rose-200",
-          slate: "inline-flex items-center rounded-full bg-slate-200 px-2 py-0.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+          amber: "inline-flex items-center rounded-full bg-warning px-2 py-0.5 text-xs font-medium text-on-status",
+          rose: "inline-flex items-center rounded-full bg-danger px-2 py-0.5 text-xs font-medium text-on-status",
+          slate: "inline-flex items-center rounded-full bg-subtle px-2 py-0.5 text-xs font-medium text-ink dark:bg-subtle-dark dark:text-ink-dark"
         };
         var promptEdits = {};
         var lastFocus = null;
@@ -886,10 +932,10 @@
             wrap.className = "min-w-0";
             if (pair[0] === "Note" || pair[0] === "Description") wrap.classList.add("sm:col-span-2");
             var dt = document.createElement("dt");
-            dt.className = "text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400";
+            dt.className = "text-xs font-medium uppercase tracking-wide text-muted dark:text-muted-dark";
             dt.textContent = pair[0];
             var dd = document.createElement("dd");
-            dd.className = "mt-1 text-sm text-slate-900 dark:text-slate-100";
+            dd.className = "mt-1 text-sm text-ink dark:text-ink-dark";
             dd.textContent = pair[1];
             wrap.appendChild(dt);
             wrap.appendChild(dd);
@@ -905,7 +951,7 @@
             var statusRow = document.createElement("p");
             statusRow.className = "mt-3 flex items-center gap-2 text-sm";
             var statusLabel = document.createElement("span");
-            statusLabel.className = "text-slate-500 dark:text-slate-400";
+            statusLabel.className = "text-muted dark:text-muted-dark";
             statusLabel.textContent = "Status";
             var badge = document.createElement("span");
             badge.className = BADGES[detail.tone];
@@ -913,19 +959,19 @@
             statusRow.appendChild(statusLabel);
             statusRow.appendChild(badge);
             var label = document.createElement("label");
-            label.className = "mt-4 block text-sm font-medium text-slate-700 dark:text-slate-200";
+            label.className = "mt-4 block text-sm font-medium text-ink dark:text-ink-dark";
             label.htmlFor = "system-prompt";
             label.textContent = "System prompt";
             var textarea = document.createElement("textarea");
             textarea.id = "system-prompt";
             textarea.rows = 8;
-            textarea.className = "mt-2 w-full rounded-lg border border-slate-300 bg-white p-3 font-mono text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100";
+            textarea.className = "mt-2 w-full rounded-lg border border-border bg-surface p-3 font-mono text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface dark:focus-visible:ring-canvas dark:focus-visible:ring-offset-surface-dark dark:border-border-dark dark:bg-canvas-dark dark:text-ink-dark";
             textarea.value = Object.prototype.hasOwnProperty.call(promptEdits, id) ? promptEdits[id] : detail.prompt;
             textarea.addEventListener("input", function () {
               promptEdits[id] = textarea.value;
             });
             var help = document.createElement("p");
-            help.className = "mt-2 text-xs text-slate-500 dark:text-slate-400";
+            help.className = "mt-2 text-xs text-muted dark:text-muted-dark";
             help.textContent = "Edits stay in this browser session only.";
             wrap.appendChild(statusRow);
             wrap.appendChild(label);
@@ -935,7 +981,7 @@
           }
           if (detail.kind === "skill") {
             var description = document.createElement("p");
-            description.className = "text-sm text-slate-700 dark:text-slate-200";
+            description.className = "text-sm text-ink dark:text-ink-dark";
             description.textContent = detail.description;
             var count = document.createElement("p");
             count.className = "mt-3 text-sm font-medium";
@@ -960,7 +1006,7 @@
             caption.className = "sr-only";
             caption.textContent = "Itemized skill prices";
             var thead = document.createElement("thead");
-            thead.className = "border-b border-slate-200 text-xs uppercase tracking-wide text-slate-500 dark:border-slate-700 dark:text-slate-400";
+            thead.className = "border-b border-border text-xs uppercase tracking-wide text-muted dark:border-border-dark dark:text-muted-dark";
             var headRow = document.createElement("tr");
             ["Skill", "Monthly price"].forEach(function (labelText) {
               var th = document.createElement("th");
@@ -973,7 +1019,7 @@
             var tbody = document.createElement("tbody");
             detail.items.forEach(function (item) {
               var tr = document.createElement("tr");
-              tr.className = "border-b border-slate-100 dark:border-slate-800";
+              tr.className = "border-b border-border dark:border-border-dark";
               item.forEach(function (value) {
                 var td = document.createElement("td");
                 td.className = "px-2 py-2";
@@ -990,7 +1036,7 @@
           }
           if (detail.kind === "error") {
             var pre = document.createElement("pre");
-            pre.className = "mt-4 overflow-x-auto whitespace-pre-wrap rounded-lg bg-slate-950 p-3 font-mono text-xs text-slate-100";
+            pre.className = "mt-4 overflow-x-auto whitespace-pre-wrap rounded-lg bg-ink p-3 font-mono text-xs text-canvas";
             pre.textContent = detail.trace;
             wrap.appendChild(pre);
           }
